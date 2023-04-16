@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import upload from "../../utils/upload";
 import "./Register.scss";
 import newRequest from "../../utils/newRequest";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import app from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -12,7 +10,7 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    // img: "",
+    img: "",
     country: "",
     isSeller: false,
     desc: "",
@@ -34,8 +32,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let url = "";
-
+    const url = await upload(file);
     try {
       await newRequest.post("/auth/register", {
         ...user,
@@ -55,7 +52,7 @@ function Register() {
           <input
             name="username"
             type="text"
-            placeholder="username"
+            placeholder="johndoe"
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>
@@ -73,7 +70,7 @@ function Register() {
           <input
             name="country"
             type="text"
-            placeholder="India"
+            placeholder="Usa"
             onChange={handleChange}
           />
           <button type="submit">Register</button>
@@ -81,7 +78,7 @@ function Register() {
         <div className="right">
           <h1>I want to become a seller</h1>
           <div className="toggle">
-            <label htmlFor="">Activate the Enterpreneur account</label>
+            <label htmlFor="">Activate the seller account</label>
             <label className="switch">
               <input type="checkbox" onChange={handleSeller} />
               <span className="slider round"></span>
@@ -91,7 +88,7 @@ function Register() {
           <input
             name="phone"
             type="text"
-            placeholder="+91 xxxxxxxx"
+            placeholder="+1 234 567 89"
             onChange={handleChange}
           />
           <label htmlFor="">Description</label>
